@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- The test APK is signed with the debug key, which matches the app under test. -->
+    <uses-permission android:name="net.hwyz.iov.vehicle.ivi.sec.permission.USE_DEVICE_IDENTITY" />
+    <uses-permission android:name="net.hwyz.iov.vehicle.ivi.sec.permission.READ_STATE" />
+
+</manifest>

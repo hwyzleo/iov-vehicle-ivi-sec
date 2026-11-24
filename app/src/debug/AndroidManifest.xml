@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+      Debug/engineering provisioning entry only.
+
+      The production activity stays unexported. This alias makes the provisioning UI reachable with
+      `adb shell am start -n <package>/.provisioning.DebugProvisioningEntry` (shell uid) and from the
+      launcher on a bench device, without widening the release surface.
+    -->
+    <application>
+        <activity-alias
+            android:name=".provisioning.DebugProvisioningEntry"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:targetActivity=".provisioning.ProvisioningActivity">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="net.hwyz.iov.vehicle.ivi.sec.action.DEBUG_PROVISION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity-alias>
+    </application>
+
+</manifest>

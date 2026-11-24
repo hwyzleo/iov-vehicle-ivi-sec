@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">IVI-SEC</string>
+    <string name="provisioning_title">IVI-SEC provisioning</string>
+    <string name="state_label">State</string>
+    <string name="device_id_label">Device ID</string>
+    <string name="certificate_label">Certificate</string>
+    <string name="csr_ready">CSR ready for export</string>
+    <string name="csr_saved_to">CSR saved: %1$s</string>
+    <string name="csr_copied">CSR copied to clipboard</string>
+    <string name="csr_export_unavailable">File manager unavailable; CSR is shown below. Use Copy CSR or pull: %1$s</string>
+    <string name="csr_missing">Create a CSR first</string>
+    <string name="chain_file_missing">Chain file not found:</string>
+    <string name="chain_too_large">Certificate input too large (limit %1$d bytes)</string>
+    <string name="chain_imported">Certificate imported: %1$s</string>
+    <string name="chain_input_label">Certificate chain (PEM bundle: leaf first, then its issuers)</string>
+    <string name="chain_input_hint">-----BEGIN CERTIFICATE-----\n…leaf certificate…\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\n…issuer certificate…\n-----END CERTIFICATE-----</string>
+    <string name="action_paste_chain">Paste chain from clipboard</string>
+    <string name="action_import_pasted">Import pasted chain</string>
+    <string name="chain_input_empty">Paste or type the certificate chain first</string>
+    <string name="chain_clipboard_empty">Clipboard has no text</string>
+    <string name="chain_pasted">Chain pasted (%1$d chars); check it is leaf first, then Import</string>
+    <string name="action_create_csr">Create key and CSR</string>
+    <string name="action_export_csr">Export CSR</string>
+    <string name="action_copy_csr">Copy CSR</string>
+    <string name="action_import_chain">Import certificate chain</string>
+    <string name="action_import_storage">Import chain from app storage</string>
+    <string name="action_reopen">Reopen for provisioning</string>
+    <string name="action_refresh">Refresh state</string>
+</resources>

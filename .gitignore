@@ -8,6 +8,12 @@ local.properties
 
 # Log/OS Files
 *.log
+.DS_Store
+Thumbs.db
+
+# Signing material stays on the build host (keystore path/passwords in local config)
+keystore.properties
+signing.properties
 
 # Android Studio generated files and folders
 captures/
@@ -33,3 +39,5 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+graphify-out/
