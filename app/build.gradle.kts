@@ -19,7 +19,15 @@ android {
         buildConfigField("String", "CIAM_CLIENT_ID", "\"ivi-capp\"")
         buildConfigField("String", "DEVICE_KEY_ALIAS", "\"ivi-sec-device-v1\"")
         // MOCK until Xiaomi exposes the real SE/HSM UID; must be provisioned per device before production.
+        // Security chip identity only: CSR CN / SAN urn:ecu-uid:<hsm_uid>, never the CIAM device_id.
         buildConfigField("String", "HSM_UID", "\"00000005AA0000000000000000000001\"")
+        // Device SN: the CIAM device_id claim (IVI-SEC-DSN-CR-002 D-003). MOCK until the line injects
+        // it per vehicle; MUST equal the device subject registered in VIAM, otherwise CIAM rejects.
+        buildConfigField(
+            "String",
+            "DEVICE_SN",
+            "\"${(project.findProperty("deviceSn") as String?) ?: "00000005AA00000001"}\"",
+        )
         buildConfigField(
             "String",
             "DEVICE_SCOPES",

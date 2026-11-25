@@ -109,13 +109,23 @@ dependencies in `IVI-SEC-DSN-CR-001` §14 are delivered.
 ## Configuration
 
 Deployment values are `BuildConfig` fields in `app/build.gradle.kts` (`SGW_BASE_URL`,
-`CIAM_CLIENT_ID`, `DEVICE_KEY_ALIAS`, `DEVICE_SCOPES`, `CALLER_WHITELIST`, `HSM_UID`). Security policy defaults
+`CIAM_CLIENT_ID`, `DEVICE_KEY_ALIAS`, `DEVICE_SCOPES`, `CALLER_WHITELIST`, `HSM_UID`, `DEVICE_SN`).
+Security policy defaults
 (nonce bounds, renewal windows, rate limits, audit capacity) live in `SecConfig`.
 
-`HSM_UID` is currently the mock `00000005AA0000000000000000000001`. It must be replaced with a
-per-device value provisioned by the line/vendor channel before production: two devices sharing one
-UID collide in PKI/VIAM registration. The device serial (`deviceId`) remains the SEC-CIAM token
-claim and is independent from the certificate identity.
+Two deployment identities are separate on purpose (IVI-SEC-DSN-CR-002):
+
+- `HSM_UID` — the security chip identity used only for the certificate: CSR `CN=<hsm_uid>`,
+  `SAN=urn:ecu-uid:<hsm_uid>`, PKI/VIAM subject. Currently the mock
+  `00000005AA0000000000000000000001`; it must be replaced per device before production (two devices
+  sharing one UID collide in PKI/VIAM registration).
+- `DEVICE_SN` — the device serial sent as the CIAM `device_id` claim. Currently the mock
+  `00000005AA00000001`; it must be injected per vehicle by the line (`-PdeviceSn=...` overrides it)
+  and **must equal the device subject registered in VIAM**, otherwise CIAM rejects the grant.
+
+`DeviceSerialResolver` owns the resolution order: `DEVICE_SN` → platform read only serial
+(`Build.getSerial()` → `Build.SERIAL`) → none, in which case the token request fails closed. Never
+substitute `hsm_uid`, `Settings.Secure`, VIN, the client id or a random UUID.
 
 The debug build appends the instrumentation package to `CALLER_WHITELIST`; release builds keep only
 the registered IVI callers.

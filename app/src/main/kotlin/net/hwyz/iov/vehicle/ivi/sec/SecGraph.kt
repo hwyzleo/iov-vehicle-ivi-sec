@@ -6,6 +6,7 @@ import net.hwyz.iov.vehicle.ivi.sec.data.cloud.OkHttpDeviceTokenClient
 import net.hwyz.iov.vehicle.ivi.sec.data.keystore.AndroidKeyStoreDeviceKeyPort
 import net.hwyz.iov.vehicle.ivi.sec.data.log.AndroidDiagnosticsLogger
 import net.hwyz.iov.vehicle.ivi.sec.data.platform.AndroidDeviceSerialProvider
+import net.hwyz.iov.vehicle.ivi.sec.data.platform.DeviceSerialResolver
 import net.hwyz.iov.vehicle.ivi.sec.data.store.DataStoreSecMetaStore
 import net.hwyz.iov.vehicle.ivi.sec.domain.IviSecFacade
 import net.hwyz.iov.vehicle.ivi.sec.domain.admission.CallerPolicy
@@ -34,9 +35,17 @@ class SecGraph(
     val deviceKeyPort: DeviceKeyPort = AndroidKeyStoreDeviceKeyPort(),
     val metaStore: SecMetaStore = DataStoreSecMetaStore.create(context.applicationContext),
     callerVerifier: CallerVerifier = AndroidCallerIdentityProvider(context.applicationContext),
+    /**
+     * CIAM `device_id` claim (IVI-SEC-DSN-CR-002 D-003): deploy supplied SN first, platform read only
+     * serial second, otherwise null so the token request fails closed.
+     *
+     * BLK-4: the device serial reader needs no context any more (the Settings fallback is gone).
+     */
     private val deviceIdProvider: () -> String? = {
-        // BLK-4: the device serial reader needs no context any more (the Settings fallback is gone).
-        AndroidDeviceSerialProvider().deviceId()
+        DeviceSerialResolver.resolve(
+            deployValue = BuildConfig.DEVICE_SN,
+            platformValue = { AndroidDeviceSerialProvider().deviceId() },
+        ).value
     },
     tokenClient: DeviceTokenPort = OkHttpDeviceTokenClient(
         baseUrl = BuildConfig.SGW_BASE_URL,
